@@ -31,13 +31,13 @@ class ClassifierModel:
                     MAX_n_estimators = 310,
                     MAX_max_depth = 20,
                     MAX_min_samples_split = 5,
-                    MAX_min_samples_leaf = 2):
+                    MAX_min_samples_leaf = 3):
             
             self.n_estimators = list(range(20, MAX_n_estimators, 10))
             self.criterion = ['gini', 'entropy']
             self.max_depth = list(range(2, MAX_max_depth))
-            self.min_samples_split = list(range(1, MAX_min_samples_split))
-            self.min_samples_leaf = list(range(1, MAX_min_samples_leaf))
+            self.min_samples_split = list(range(2, MAX_min_samples_split))
+            self.min_samples_leaf = list(range(2, MAX_min_samples_leaf))
             self.model = RandomForestClassifier
 
             self.grid = {

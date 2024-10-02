@@ -12,13 +12,13 @@ from functools import partial
 from utils import timeThis, timeFormat, shuffleList
 
 @timeThis
-def load_dataset():
-    return pd.read_csv('C:/Documents/aprendizaje-automatico/datasets/winequality-white.csv', sep = ';')
+def load_dataset(path):
+    return pd.read_csv(path)
 
 @timeThis
 def train_test_division(df):
-    x = df.drop('quality', axis = 1)
-    y = df.quality
+    x = df.drop('Survived', axis = 1)
+    y = df.Survived
 
     return train_test_split(x, y, test_size = 0.3, random_state = 123)
     
@@ -51,7 +51,7 @@ def train_model(
     end = time.time() - start
     total_time = timedelta(seconds = end)
 
-    return (modelName, hyperparameters, str(total_time), accuracy)
+    return (modelName, hyperparameters, end, accuracy)
 
 @timeThis
 def execute(model, x_val_train, y_val_train, x_val_test, y_val_test, max_combinations = None):
@@ -71,7 +71,7 @@ def execute(model, x_val_train, y_val_train, x_val_test, y_val_test, max_combina
 
         with concurrent.futures.ThreadPoolExecutor() as executor:
             for h in hyperparameters:
-                partial_func = partial(train_model, _modelSk, modelName, h, 
+                partial_func = partial(train_model, _modelSk.model, modelName, h, 
                                     x_val_train, y_val_train, x_val_test, y_val_test)
     
                 futures.append(executor.submit(partial_func))
@@ -87,7 +87,7 @@ def execute(model, x_val_train, y_val_train, x_val_test, y_val_test, max_combina
 @timeThis
 def download_results(results, output):
     df_results = pd.DataFrame(results, columns = ['model', 'hyperparameters', 'time', 'accuracy'])
-    path = f'C:/Documents/aprendizaje-automatico/datasets/resultados-{output}.csv'
+    path = f'C:/Documents/Proyectos/proyecto-titanic/datasets/results/{output}.csv'
 
     df_results.to_csv(path, index = False)
     print(f'Terminado: {output}')
@@ -95,14 +95,15 @@ def download_results(results, output):
 
 if __name__ == '__main__':
 
-    df = load_dataset()
+    path_dataset = "C:/Documents/Proyectos/proyecto-titanic/datasets/titanic-limpio-numerico.csv"
+    df = load_dataset(path_dataset)
     x_train, x_test, y_train, y_test = train_test_division(df)
 
     x_val_train, x_val_test, y_val_train, y_val_test = validation_division(x_train, y_train)
 
-    model_selection, output = 'knn', 'knn-validation'
+    model_selection, output = 'randomForest', 'randomForest-validation'
     results = execute(model_selection, x_val_train, x_val_test, y_val_train, y_val_test,
-                        max_combinations = 200)
+                        max_combinations = 500)
 
     download_results(results, output)
     
