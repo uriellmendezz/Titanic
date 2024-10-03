@@ -1,4 +1,4 @@
-from .models import ClassifierModel, Mapper
+from models import ClassifierModel, Mapper
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
@@ -9,7 +9,7 @@ from datetime import timedelta, datetime
 import concurrent.futures
 import numpy as np
 from functools import partial
-from .utils import timeThis, timeFormat, shuffleList, continueProgram
+from utils import timeThis, timeFormat, shuffleList, continueProgram
 
 @timeThis
 def load_dataset(path):

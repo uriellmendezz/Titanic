@@ -2,6 +2,8 @@ import time, random, os
 from functools import wraps
 from datetime import datetime, timedelta
 from sklearn.model_selection import GridSearchCV, train_test_split
+from models import ClassifierModel
+from sklearn.ensemble import RandomForestClassifier
 
 def timeThis(function):
     @wraps(function)
@@ -24,7 +26,7 @@ def shuffleList(_list):
     random.shuffle(new)
     return new
 
-def GridSearch(model, parameters, x_train, y_train, cv = 3, verbose = 1, jobs = -1):
+def GridSearch(model, parameters, x, y, cv = 3, verbose = 0, jobs = -1):
     grid = GridSearchCV(
         estimator = model,
         param_grid = parameters,
@@ -33,7 +35,7 @@ def GridSearch(model, parameters, x_train, y_train, cv = 3, verbose = 1, jobs = 
         verbose = verbose,
         n_jobs = jobs)
     
-    grid.fit(x_train, y_train)
+    grid.fit(x, y)
     return grid, grid.cv_results_
 
 def continueProgram(model, combinaciones):
@@ -55,3 +57,6 @@ def continueProgram(model, combinaciones):
             return int(combinaciones)
         else:
             continue
+
+def limitDict(_dict, n):
+    return {key[:n]: value for key, value in _dict.items()}
