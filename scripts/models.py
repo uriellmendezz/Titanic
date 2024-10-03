@@ -7,7 +7,7 @@ from sklearn.linear_model import LogisticRegression
 class ClassifierModel:
     class tree:
         def __init__(self,
-                    MAX_max_depth = 20):
+                    MAX_max_depth = 60):
             
             self.criterion = ['gini', 'entropy', 'log_loss']
             self.max_depth = list(range(2, MAX_max_depth))
@@ -61,12 +61,13 @@ class ClassifierModel:
                 for max_depth in self.max_depth
                 for min_samples_split in self.min_samples_split
                 for min_samples_leaf in self.min_samples_leaf
+                if min_samples_split > min_samples_leaf
             ]
 
     class knn:
         def __init__(self,
                     MAX_n_neighbors=20,
-                    MAX_leaf_size=45):
+                    MAX_leaf_size=35):
             
             self.n_neighbors = list(range(1, MAX_n_neighbors))
             self.weights = ['uniform', 'distance']
@@ -134,6 +135,9 @@ class ClassifierModel:
                 for C in self.C
                 for max_iter in self.max_iter
                 for solver in self.solver
+                if (solver == 'lbfgs' and penalty in ['l2', 'none']) or
+                (solver == 'liblinear' and penalty in ['l1', 'l2']) or
+                (solver == 'saga' and penalty in ['l1', 'l2', 'elasticnet'])
             ]
 
 Mapper = {
@@ -158,10 +162,3 @@ Mapper = {
             'output': 'logistic_regression'
         }
     }
-        
-if __name__ == '__main__':
-    modelos = [ClassifierModel.tree()]
-    for modelo in modelos:
-        print(type(modelo).__name__, len(modelo.combinations))
-
-    print(ClassifierModel.tree().combinations[:10])

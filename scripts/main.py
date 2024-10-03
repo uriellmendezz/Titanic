@@ -1,4 +1,4 @@
-from models import ClassifierModel, Mapper
+from .models import ClassifierModel, Mapper
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
@@ -9,7 +9,7 @@ from datetime import timedelta, datetime
 import concurrent.futures
 import numpy as np
 from functools import partial
-from utils import timeThis, timeFormat, shuffleList
+from .utils import timeThis, timeFormat, shuffleList, continueProgram
 
 @timeThis
 def load_dataset(path):
@@ -54,15 +54,14 @@ def train_model(
     return (modelName, hyperparameters, end, accuracy)
 
 @timeThis
-def execute(model, x_val_train, y_val_train, x_val_test, y_val_test, max_combinations = None):
-    if model in ['tree', 'randomForest', 'knn', 'logisticRegresion']:
+def execute(modelName, modelObj, x_val_train, y_val_train, x_val_test, y_val_test, max_combinations = None):
+    if model in ['tree', 'randomForest', 'knn', 'logisticRegression']:
         start = time.time()
         results = []
         i = 0
 
-        modelName = Mapper[model]['modelName']
-        _modelSk = Mapper[model]['modelSk']
-        hyperparameters = shuffleList(_modelSk.combinations)
+        hyperparameters = shuffleList(modelObj.combinations)
+        max_combinations = continueProgram(model = modelName, combinaciones = len(hyperparameters))
 
         if max_combinations is not None:
             hyperparameters = hyperparameters[:max_combinations]
@@ -71,7 +70,7 @@ def execute(model, x_val_train, y_val_train, x_val_test, y_val_test, max_combina
 
         with concurrent.futures.ThreadPoolExecutor() as executor:
             for h in hyperparameters:
-                partial_func = partial(train_model, _modelSk.model, modelName, h, 
+                partial_func = partial(train_model, modelObj.model, modelName, h, 
                                     x_val_train, y_val_train, x_val_test, y_val_test)
     
                 futures.append(executor.submit(partial_func))
@@ -98,12 +97,12 @@ if __name__ == '__main__':
     path_dataset = "C:/Documents/Proyectos/proyecto-titanic/datasets/titanic-limpio-numerico.csv"
     df = load_dataset(path_dataset)
     x_train, x_test, y_train, y_test = train_test_division(df)
-
     x_val_train, x_val_test, y_val_train, y_val_test = validation_division(x_train, y_train)
 
-    model_selection, output = 'randomForest', 'randomForest-validation'
-    results = execute(model_selection, x_val_train, x_val_test, y_val_train, y_val_test,
-                        max_combinations = 500)
+    model, output = 'knn', 'knn-2-validation'
+    modelName, modelObj = Mapper[model]['modelName'], Mapper[model]['modelSk']
+
+    results = execute(modelName, modelObj, x_val_train, x_val_test, y_val_train, y_val_test)
 
     download_results(results, output)
     
