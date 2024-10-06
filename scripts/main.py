@@ -20,7 +20,7 @@ def train_test_division(df):
     x = df.drop('Survived', axis = 1)
     y = df.Survived
 
-    return train_test_split(x, y, test_size = 0.3, random_state = 123)
+    return train_test_split(x, y, test_size = 0.25, random_state = 123)
     
 @timeThis
 def validation_division(x_train, y_train):
@@ -94,12 +94,12 @@ def download_results(results, output):
 
 if __name__ == '__main__':
 
-    path_dataset = "C:/Documents/Proyectos/proyecto-titanic/datasets/titanic-limpio-numerico.csv"
+    path_dataset = "C:/Documents/Proyectos/proyecto-titanic/datasets/train-limpio.csv"
     df = load_dataset(path_dataset)
     x_train, x_test, y_train, y_test = train_test_division(df)
     x_val_train, x_val_test, y_val_train, y_val_test = validation_division(x_train, y_train)
 
-    model, output = 'knn', 'knn-2-validation'
+    model, output = 'logisticRegression', 'lr-2-validation'
     modelName, modelObj = Mapper[model]['modelName'], Mapper[model]['modelSk']
 
     results = execute(modelName, modelObj, x_val_train, x_val_test, y_val_train, y_val_test)
