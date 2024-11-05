@@ -5,7 +5,7 @@ def proceso_ingenieria(df_main, df_ext):
     df = df_main.copy()
 
     # Elimino los duplicados y columnas irrelevantes.
-    df = df.drop_duplicates().drop(['Ticket', 'Cabin'], axis = 1)
+    df = df.drop(['Ticket', 'Cabin'], axis = 1)
 
     # Creo columnas como si fuese un OneHotEncoder
     df = pd.get_dummies(df, columns=['Sex', 'Pclass', 'Embarked'])
@@ -28,4 +28,4 @@ def proceso_ingenieria(df_main, df_ext):
     df_num_cortado = pd.get_dummies(df_num[df_num['Title'].isin(titulos_frecuentes)], ['Title'])
     df_num = pd.merge(df_num, df_num_cortado).drop(['Age_wiki', 'Title', 'PassengerId'], axis = 1).astype(float)
 
-    return df_num
+    return df_num.drop_duplicates().reset_index(drop=True)

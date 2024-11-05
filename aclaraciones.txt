@@ -1,0 +1,9 @@
+Hecho por Uriel Emiliano Mendez.
+
+- Durante el desarrollo del proyecto, tomé algunas decisiones clave que me permitieron ahorrar tiempo y alcanzar más rápido el objetivo: construir un modelo de machine learning que prediga los datos del Titanic.
+
+1. Creé una carpeta llamada "scripts" donde generé varios archivos Python. Mi intención fue establecer un proceso ágil para entrenar modelos y optimizar los hiperparámetros. Como probar diferentes combinaciones de hiperparámetros demanda tiempo y recursos, implementé un proceso asíncrono. Así, pude evaluar una gran cantidad de combinaciones de hiperparámetros para distintos modelos, como árbol de decisión, random forest, regresión logística y KNN. Este programa lo ejecuté desde la consola y fue guardando los resultados en archivos CSV.
+
+2. Trabajé el proyecto de manera local en mi PC, no en Google Colab, por lo que usé Git para controlar las versiones y fui subiendo los archivos a GitHub. Esto me permitió tener una copia de seguridad en la nube en caso de necesitar los archivos en las clases presenciales.
+
+Link del proyecto en GitHub: https://github.com/uriellmendezz/Titanic
