@@ -1,6 +1,6 @@
 # Proyecto del Titanic (Kaggle)
-![Titanic](src/titanic-cover.png)
+![Titanic](source/titanic-cover.png)
 
 ### Busqueda de los mejores hiperparametros - Etapa de "*validation*"
-![Knn](src/knn-validation-run.png)
-![Random Forest](src/rf-validation-run.png)
+![Knn](source/knn-validation-run.png)
+![Random Forest](source/rf-validation-run.png)
