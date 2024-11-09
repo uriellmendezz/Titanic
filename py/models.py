@@ -4,6 +4,13 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression
 
+'''
+Este código define una clase ClassifierModel con modelos de clasificación como árboles de decisión, random forests, KNN y regresión logística.
+Para cada modelo, creo combinaciones de hiperparámetros que usaré para buscar la mejor configuración.
+Luego, el diccionario Mapper me ayuda a asociar cada modelo con su configuración, nombre y salida,
+lo que me permite entrenarlos de manera eficiente con diferentes combinaciones de parámetros.
+'''
+
 class ClassifierModel:
     class tree:
         def __init__(self,

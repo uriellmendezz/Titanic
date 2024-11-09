@@ -4,6 +4,11 @@ from sklearn.impute import SimpleImputer
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import MinMaxScaler
 
+'''
+Cree una función que me haga todo el proceso de ingenieria de variable en una sola función,
+simplificando un monton el proceso de limpieza y transformaciones.
+'''
+
 def Ingenieria(df_main, df_ext, transformer=None, dataset="train"):
     
     df = df_main.copy()
